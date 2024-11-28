@@ -37,7 +37,7 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
 
     Arguments:
         reader_model_name: Local model as the generator
-        faiss_folder
+        faiss_folder: Path to the database folder
         questions_df: DataFrame of the CSV file containing the questions in our benchmark.
 
     Return: List of results, including questions, answers and retrieved contexts.
