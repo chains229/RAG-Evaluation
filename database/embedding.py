@@ -1,7 +1,7 @@
 import os
 import requests
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from PyPDF2 import PdfReader
 import pandas as pd

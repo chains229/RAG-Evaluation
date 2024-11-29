@@ -5,7 +5,7 @@ from typing import List, Tuple
 import json
 import tqdm
 import pandas as pd
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document as LangchainDocument
 from RAG.utils import load_reader_model, create_prompt_template
