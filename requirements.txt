@@ -11,8 +11,8 @@ faiss-gpu
 openpyxl 
 pacmap 
 datasets 
-ragatouille 
 gdown
 instructor
 google-generativeai
 pydantic
+deepeval

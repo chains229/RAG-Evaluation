@@ -11,7 +11,7 @@ from database.utils import *
 # Function to process input files and convert them into documents
 def process_files(file_paths):
     documents = []
-    for file_path in tqdm(file_paths):
+    for file_path in file_paths:
         ext = os.path.splitext(file_path)[1].lower()
         try:
             if ext == ".pdf":
