@@ -14,13 +14,13 @@ def eval(df):
         Reference-required metrics: As proposed in our paper. 
     """
 
-    columns = ["question", "answer", "response", "retrieved_context", "_id"]
-    questions, answers, responses, contexts, ids = (df[col].tolist() for col in columns)
+    columns = ["question", "answer", "response", "retrieved_context", "_id", "level"]
+    questions, answers, responses, contexts, ids, levels = (df[col].tolist() for col in columns)
 
     eval_results = []
     for index in range(len(questions)):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
-        ref_required_result = ref_required_testcase(questions[index], responses[index], answers[index])
+        ref_required_result = ref_required_testcase(questions[index], responses[index], answers[index], levels[index])
         
         
         eval_results.append({
@@ -31,6 +31,8 @@ def eval(df):
             "ans_rel_reason": ref_free_result[1]["reason"],
             "fai_score": ref_free_result[2]["score"],
             "fai_reason": ref_free_result[2]["reason"],
+            "cor_score": ref_required_result["score"],
+            "cor_reason": ref_required_result["reason"]
         })
     
     return pd.DataFrame(eval_results)

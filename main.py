@@ -11,6 +11,8 @@ def main(args):
     question_df = pd.read_csv(args.data_path)
     if args.level != "All":
         question_df = question_df[question_df['level'] == args.level]
+    if args.demo == "true":
+        question_df = question_df.head(10)
 
     print("Done loading data :3")
     print("_________________________")
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_path', type=str, help="Path to the dataset, can be laws or news domain")
     parser.add_argument('--faiss_folder', type=str, help="Path to the knowledge database")
     parser.add_argument('--level', type=str, choices=["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create", "All"], default="All")
-
+    parser.add_argument('--demo', type=str, choices=['true','false'], help="Run demo, including 10 first rows, to test if code works", default="false")
 
     args = parser.parse_args()
 
