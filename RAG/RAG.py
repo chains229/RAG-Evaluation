@@ -6,6 +6,7 @@ import json
 import tqdm
 import pandas as pd
 from langchain.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document as LangchainDocument
 from RAG.utils import load_reader_model, create_prompt_template
 
@@ -45,7 +46,19 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
     
     # Initialize components
     llm = load_reader_model(reader_model_name)
-    knowledge_index = FAISS.load_local(faiss_folder)
+
+    embedding_model = HuggingFaceEmbeddings(
+            model_name="intfloat/multilingual-e5-base",
+            multi_process=True,
+            model_kwargs={"device": "cuda"},
+            encode_kwargs={"normalize_embeddings": True},  # Set `True` for cosine similarity
+            show_progress=True,)
+
+    knowledge_index = FAISS.load_local(
+        faiss_folder, 
+        embedding_model, 
+        allow_dangerous_deserialization=True
+    )
     rag_prompt_template = create_prompt_template(AutoTokenizer.from_pretrained(reader_model_name))
 
     # Load questions from CSV
