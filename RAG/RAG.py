@@ -67,7 +67,7 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
 
     # Process each question and collect answers
     results = []
-    for i in tqdm(range(len(questions))):
+    for i in range(len(questions)):
         response, relevant_docs = answer_one_sample(
             questions[i], llm, knowledge_index, rag_prompt_template
         )
@@ -76,5 +76,6 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
             "response": response,
             "retrieved_context": [doc.page_content for doc in relevant_docs]
         })
+        print(i)
 
     return pd.DataFrame(results)
