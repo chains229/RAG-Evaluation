@@ -2,6 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import Pipeline
 from typing import List, Tuple
+import torch
 import json
 import tqdm
 import pandas as pd
@@ -12,7 +13,7 @@ from RAG.utils import load_reader_model, create_prompt_template
 
 # Function to answer a question with RAG
 def answer_one_sample(question: str, llm: Pipeline, knowledge_index: FAISS,
-    rag_prompt_template, num_retrieved_docs: int = 30, num_docs_final: int = 5,
+    rag_prompt_template, num_retrieved_docs: int = 15, num_docs_final: int = 5,
 ) -> Tuple[str, List[LangchainDocument]]:
     # Retrieve documents
     relevant_docs = knowledge_index.similarity_search(query=question, k=num_retrieved_docs)
@@ -27,6 +28,9 @@ def answer_one_sample(question: str, llm: Pipeline, knowledge_index: FAISS,
 
     # Generate an answer
     answer = llm(final_prompt)[0]["generated_text"]
+
+    # Clear GPU memory
+    torch.cuda.empty_cache()
 
     return answer, relevant_docs
 
@@ -77,5 +81,6 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
             "retrieved_context": [doc.page_content for doc in relevant_docs]
         })
         print(i)
+        print(response)
 
     return pd.DataFrame(results)

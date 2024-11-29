@@ -27,6 +27,11 @@ def process_files(file_paths):
                     documents.append(Document(page_content=text))
         except Exception as e:
             print(f"Error processing {file_path}: {e}")
+
+    # Code chunking
+
+    # Save document thành txt
+
     return documents
 
 def create_faiss_index(input_csvs: list, input_pdfs: list, model = "intfloat/multilingual-e5-base", output_folder = "Database"):
