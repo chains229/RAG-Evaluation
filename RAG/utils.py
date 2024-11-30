@@ -1,10 +1,9 @@
 from transformers import pipeline
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from transformers import Pipeline
 
 # Function to load the reader model and tokenizer
-def load_reader_model(reader_model_name: str) -> Pipeline:
+def load_reader_model(reader_model_name: str) -> pipeline:
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,

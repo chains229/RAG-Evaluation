@@ -35,7 +35,6 @@ def answer_one_sample(question: str, llm: Pipeline, knowledge_index: FAISS,
     return answer, relevant_docs
 
 
-# Main function to execute the RAG pipeline
 def test(reader_model_name: str, faiss_folder: str, questions_df):
     """
     Run RAG pipeline on our benchmark.
@@ -65,7 +64,7 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
     )
     rag_prompt_template = create_prompt_template(AutoTokenizer.from_pretrained(reader_model_name))
 
-    # Load questions from CSV
+    # Load questions from dataframe
     questions = questions_df["question"].tolist()
     ids = questions_df["_id"].tolist()
 
