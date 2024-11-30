@@ -42,7 +42,7 @@ def chunk_documents(documents, chunk_size, chunk_overlap):
 
     chunked_documents = []
     for doc in splitted_doc:
-        chunked_documents.append(Document(page_content=doc, metadata=doc.metadata))
+        chunked_documents.append(Document(page_content=doc))
     print(f"Chunked documents into {len(chunked_documents)} total chunks.")
     return chunked_documents
 
