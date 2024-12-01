@@ -34,11 +34,8 @@ def chunk_documents(documents, chunk_size, chunk_overlap):
     Returns:
         list: List of chunked Document objects.
     """
-    full_doc = ""
-    for doc in documents:
-        full_doc += doc + "\n"
     splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    splitted_doc = splitter.split_text(full_doc)
+    splitted_doc = splitter.split_text(documents)
 
     chunked_documents = []
     for doc in splitted_doc:

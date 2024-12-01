@@ -36,7 +36,7 @@ def process_files(file_paths):
     with open("full_document.txt", 'w') as file:
         file.write(full_doc)
 
-    return documents
+    return full_doc
 
 def create_faiss_index(input_csvs: list, input_pdfs: list, chunk_size: int, chunk_overlap: int, saved_path = None, model = "intfloat/multilingual-e5-base", output_folder = "Database"):
     '''
