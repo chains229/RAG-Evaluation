@@ -27,12 +27,19 @@ def main(args):
     print("_____________________________________________________")
 
     # Evaluation pipeline -> return _id, score
-    # eval_results = evaluator.eval(rag_merged_df)
-    # rag_merged_df = rag_merged_df.merge(eval_results, on="_id", how="inner")
+    eval_results = evaluator.eval(rag_merged_df)
+    rag_merged_df = rag_merged_df.merge(eval_results, on="_id", how="inner")
 
-    # print("_____________________________________________________")
-    # print("Done evaluating :3")
-    # print("_____________________________________________________")
+    if args.level != "All":
+        evaluator.eval_avg(rag_merged_df, args.level, args.model_name)
+    else:
+        for l in ["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create"]:
+            level_df = rag_merged_df[rag_merged_df["level"] == l]
+            evaluator.eval_avg(rag_merged_df, args.level, args.model_name)
+
+    print("_____________________________________________________")
+    print("Done evaluating :3")
+    print("_____________________________________________________")
 
     # Merge score -> save to a csv
     domain = "news" if "news" in args.data_path else "laws"

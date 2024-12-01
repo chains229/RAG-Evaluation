@@ -1,6 +1,7 @@
 from evaluate.metric.reference_free import ref_free_testcase
 from evaluate.metric.reference_required import ref_required_testcase
 import pandas as pd
+import statistics as stat
 
 def eval(df):
     """
@@ -22,7 +23,6 @@ def eval(df):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
         ref_required_result = ref_required_testcase(questions[index], responses[index], answers[index], levels[index])
         
-        
         eval_results.append({
             "_id": ids[index],
             "con_rel_score": ref_free_result[0]["score"],
@@ -37,3 +37,16 @@ def eval(df):
     
     return pd.DataFrame(eval_results)
 
+def eval_avg(df, level, model_name):
+    print("________________")
+    print(f"Result for model {model_name} at level {level}:")
+    
+    rel_col_score = stat.mean(df["rel_col_score"].tolist())
+    ans_col_score = stat.mean(df["ans_col_score"].tolist())
+    fai_score = stat.mean(df["fai_score"].tolist())
+    cor_score = stat.mean(df["cor_score"].tolist())
+
+    print("Context Relevance Score:", rel_col_score)
+    print("Answer Relevance Score:", ans_col_score)
+    print("Faithfulness Score:", fai_score)
+    print("Correctness Score:", cor_score)

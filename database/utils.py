@@ -29,7 +29,7 @@ def chunk_documents(documents, chunk_size, chunk_overlap):
     Args:
         documents (list): List of Document objects.
         chunk_size (int): Maximum size of each chunk.
-        overlap (int): Overlap between chunks.
+        chunk_overlap (int): Overlap between chunks.
     
     Returns:
         list: List of chunked Document objects.
