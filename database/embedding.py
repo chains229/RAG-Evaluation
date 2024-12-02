@@ -8,37 +8,8 @@ import pandas as pd
 import tqdm
 from database.utils import *
 
-# Function to process input files and convert them into documents
-def process_files(file_paths):
-    documents = []
-    for file_path in file_paths:
-        ext = os.path.splitext(file_path)[1].lower()
-        try:
-            if ext == ".pdf":
-                text = read_pdf(file_path)
-                documents.append(text)
-            elif ext == ".csv":
-                rows = read_csv(file_path)
-                for row in rows:
-                    documents.append(row)
-            else:
-                with open(file_path, "r", encoding="utf-8") as file:
-                    text = file.read()
-                    documents.append(text)
-        except Exception as e:
-            print(f"Error processing {file_path}: {e}")
 
-    # Save document to txt file
-    full_doc = ""
-    for doc in documents:
-        full_doc += doc + "\n"
-    
-    with open("full_document.txt", 'w') as file:
-        file.write(full_doc)
-
-    return full_doc
-
-def create_faiss_index(input_csvs: list, input_pdfs: list, chunk_size: int, chunk_overlap: int, saved_path = None, model = "intfloat/multilingual-e5-base", output_folder = "Database"):
+def create_faiss_index(saved_path, chunk_size: int, chunk_overlap: int, demo: bool, model = "intfloat/multilingual-e5-base", output_folder = "Database"):
     '''
     Retrieve content from CSVs, PDFs and create a FAISS database.
     
@@ -58,16 +29,11 @@ def create_faiss_index(input_csvs: list, input_pdfs: list, chunk_size: int, chun
             encode_kwargs={"normalize_embeddings": True},  # Set `True` for cosine similarity
             show_progress=True,)
 
-    input_files = input_csvs + input_pdfs
+    # Process the input documents file
+    with open(saved_path, "r", encoding="utf-8") as file:
+        documents = file.read()
 
-    # Process the input files into documents
-    if saved_path is not None:
-        with open(saved_path, "r", encoding="utf-8") as file:
-            documents = file.read()
-    else:
-        documents = process_files(input_files)
-
-    documents = chunk_documents(documents, chunk_size, chunk_overlap)
+    documents = chunk_documents(documents, chunk_size, chunk_overlap, tokenizer_name=model, demo=demo)
 
     print("Done processing files")
     print("_____________________")
@@ -76,11 +42,13 @@ def create_faiss_index(input_csvs: list, input_pdfs: list, chunk_size: int, chun
     vector_store = FAISS.from_documents(documents, embedding_model)
 
     # Save the FAISS index to the output folder
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    vector_store.save_local(output_folder)
+    output_folder_name = output_folder + "_" + str(chunk_size) + "_" + str(chunk_overlap)
 
-    print(f"FAISS index saved to {output_folder}")
+    if not os.path.exists(output_folder_name):
+        os.makedirs(output_folder_name)
+    vector_store.save_local(output_folder_name)
+
+    print(f"FAISS index saved to {output_folder_name}")
 
     return vector_store
 

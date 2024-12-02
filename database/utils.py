@@ -2,11 +2,109 @@ import os
 import requests
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
-from langchain.schema import Document
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.docstore.document import Document as LangchainDocument
+from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from PyPDF2 import PdfReader
+from transformers import AutoTokenizer
 import pandas as pd
 import tqdm
+
+# Function to chunk loaded documents
+def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokenizer_name, demo):
+    """
+    Chunk each document's content into smaller pieces and return a new list of documents.
+    
+    Args:
+        documents (str): The document to be splitted.
+        chunk_size (int): Maximum size of each chunk.
+        chunk_overlap (int): Overlap between chunks.
+    
+    Returns:
+        list: List of chunked Document objects.
+    """
+
+    RAW_KNOWLEDGE_BASE = []
+    documents1 = documents.split("\n\n")
+    print("Number of documents:", len(documents1))
+    len_doc = [len(documents1) if demo == False else len(documents1)/10]
+    for index in range(len_doc):
+        RAW_KNOWLEDGE_BASE.append(LangchainDocument(page_content=documents1[index]))
+
+    NEWS_SEPARATORS = [
+        "\n",     # Line breaks
+        "\t",     # Tabs
+        ". ",     # Sentences
+        ", ",     # Clauses within sentences
+        "; ",     # Semi-colons separating clauses
+        ": ",     # Colons introducing lists or explanations
+        " ",      # Spaces
+        ""        # No space, as a last resort
+        ]
+    
+    text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
+        AutoTokenizer.from_pretrained(tokenizer_name),
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        add_start_index=True,
+        strip_whitespace=True,
+        separators=NEWS_SEPARATORS,
+    )
+
+    docs_processed = []
+    for doc in RAW_KNOWLEDGE_BASE:
+        docs_processed += text_splitter.split_documents([doc])
+
+    # Remove duplicates
+    unique_texts = {}
+    docs_processed_unique = []
+    for doc in docs_processed:
+        if doc.page_content not in unique_texts:
+            unique_texts[doc.page_content] = True
+            docs_processed_unique.append(doc)
+
+    return docs_processed_unique
+
+
+def split_documents(chunk_size: int, chunk_overlap:int, 
+                    knowledge_base: List[LangchainDocument],
+                    tokenizer_name: Optional[str] = EMBEDDING_MODEL_NAME) -> List[LangchainDocument]:
+    """
+    Split documents into chunks of maximum size `chunk_size` tokens and return a list of documents.
+    """
+    text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
+        AutoTokenizer.from_pretrained(tokenizer_name),
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        add_start_index=True,
+        strip_whitespace=True,
+        separators=NEWS_SEPARATORS,
+    )
+
+    docs_processed = []
+    for doc in knowledge_base:
+        docs_processed += text_splitter.split_documents([doc])
+
+    # Remove duplicates
+    unique_texts = {}
+    docs_processed_unique = []
+    for doc in docs_processed:
+        if doc.page_content not in unique_texts:
+            unique_texts[doc.page_content] = True
+            docs_processed_unique.append(doc)
+
+    return docs_processed_unique
+
+NEWS_SEPARATORS = [
+    "\n\n",   # Paragraphs
+    "\n",     # Line breaks
+    "\t",     # Tabs
+    ". ",     # Sentences
+    ", ",     # Clauses within sentences
+    "; ",     # Semi-colons separating clauses
+    ": ",     # Colons introducing lists or explanations
+    " ",      # Spaces
+    ""        # No space, as a last resort
+]
 
 # Function to read PDF files
 def read_pdf(file_path):
@@ -21,27 +119,7 @@ def read_csv(file_path):
     df = pd.read_csv(file_path)
     return [" ".join(map(str, row)) for row in df.values]
 
-# Function to chunk loaded documents
-def chunk_documents(documents, chunk_size, chunk_overlap):
-    """
-    Chunk each document's content into smaller pieces and return a new list of documents.
-    
-    Args:
-        documents (list): List of Document objects.
-        chunk_size (int): Maximum size of each chunk.
-        chunk_overlap (int): Overlap between chunks.
-    
-    Returns:
-        list: List of chunked Document objects.
-    """
-    splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    splitted_doc = splitter.split_text(documents)
 
-    chunked_documents = []
-    for doc in splitted_doc:
-        chunked_documents.append(Document(page_content=doc))
-    print(f"Chunked documents into {len(chunked_documents)} total chunks.")
-    return chunked_documents
 
 # No need to read two below functions
 
