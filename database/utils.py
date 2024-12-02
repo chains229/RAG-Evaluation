@@ -52,9 +52,9 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     )
 
     docs_processed = []
-    for i in range(len(RAW_KNOWLEDGE_BASE)):
-        print(i)
-        docs_processed += text_splitter.split_documents([RAW_KNOWLEDGE_BASE[i]])
+    for j in range(len(RAW_KNOWLEDGE_BASE)):
+        print(j)
+        docs_processed += text_splitter.split_documents([RAW_KNOWLEDGE_BASE[j]])
 
     return docs_processed
 
