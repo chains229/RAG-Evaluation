@@ -26,7 +26,7 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     RAW_KNOWLEDGE_BASE = []
     documents1 = documents.split("\n\n")
     print("Number of documents:", len(documents1))
-    len_doc = [len(documents1) if demo == False else len(documents1)/10]
+    len_doc = len(documents1) if demo == False else len(documents1)/10
     for index in range(len_doc):
         RAW_KNOWLEDGE_BASE.append(LangchainDocument(page_content=documents1[index]))
 
