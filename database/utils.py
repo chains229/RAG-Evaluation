@@ -28,6 +28,7 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     print("Number of documents:", len(documents1))
     len_doc = len(documents1) if demo == False else int(len(documents1)/10)
     for index in range(len_doc):
+        print("Loading document", i)
         RAW_KNOWLEDGE_BASE.append(LangchainDocument(page_content=documents1[index]))
 
     NEWS_SEPARATORS = [
@@ -51,18 +52,11 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     )
 
     docs_processed = []
-    for doc in RAW_KNOWLEDGE_BASE:
-        docs_processed += text_splitter.split_documents([doc])
+    for i in range(len(RAW_KNOWLEDGE_BASE)):
+        print(i)
+        docs_processed += text_splitter.split_documents([RAW_KNOWLEDGE_BASE[i]])
 
-    # Remove duplicates
-    unique_texts = {}
-    docs_processed_unique = []
-    for doc in docs_processed:
-        if doc.page_content not in unique_texts:
-            unique_texts[doc.page_content] = True
-            docs_processed_unique.append(doc)
-
-    return docs_processed_unique
+    return docs_processed
 
 
 # Function to read PDF files
@@ -70,7 +64,7 @@ def read_pdf(file_path):
     reader = PdfReader(file_path)
     text = ""
     for page in reader.pages:
-        text += page.extract_text() + "\\n"
+        text += page.extract_text() + "\n"
     return text
 
 # Function to read CSV files
