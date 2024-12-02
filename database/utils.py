@@ -24,7 +24,7 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     """
 
     RAW_KNOWLEDGE_BASE = []
-    documents1 = documents.split("\n\n")
+    documents1 = documents.split("{sep}")
     print("Number of documents:", len(documents1))
     len_doc = len(documents1) if demo == False else int(len(documents1)/10)
     for ind in range(len_doc):

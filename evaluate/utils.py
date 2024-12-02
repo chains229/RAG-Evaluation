@@ -10,7 +10,7 @@ class CustomGemini(DeepEvalBaseLLM):
     Define Gemini as a Judge for deepeval
     """
     def __init__(self):
-        self.model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
+        self.model = genai.GenerativeModel("gemini-1.5-flash-002")
 
     def load_model(self):
         return self.model
@@ -36,7 +36,7 @@ class CustomGemini(DeepEvalBaseLLM):
         return self.generate(prompt, schema)
 
     def get_model_name(self):
-        return "Gemini 1.5 Flash"
+        return "Gemini 1.5"
 
 def eval_steps(level: str):
     "Contains the evaluation steps for each level. This will be used for reference-required metrics"
