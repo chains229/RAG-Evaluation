@@ -15,5 +15,4 @@ gdown
 instructor
 google-generativeai
 pydantic
-deepeval
 jsonref
