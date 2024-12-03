@@ -15,8 +15,8 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
 
     """
     llm_evaluator = CustomGemini()
-    # con_rel = ContextualRelevancyMetric(model = llm_evaluator, include_reason = True)
-    # time.sleep(10)
+    con_rel = ContextualRelevancyMetric(model = llm_evaluator, include_reason = True)
+    time.sleep(10)
     ans_rel = AnswerRelevancyMetric(model = llm_evaluator, include_reason = True)
     time.sleep(10)
     faith = FaithfulnessMetric(model = llm_evaluator, include_reason = True)
@@ -32,7 +32,7 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
     ans_rel_score = ans_rel.measure(testcase)
     fai_score = faith.measure(testcase)
 
-    return [
+    scores = [
         {
             'metric': 'Context Relevance',
             'score': con_rel_score.score,
@@ -49,4 +49,7 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
             'reason': fai_score.reason
         }
     ]
+
+    print(scores)
+    return scores
 
