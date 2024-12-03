@@ -15,12 +15,12 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
 
     """
     llm_evaluator = CustomGemini()
-    con_rel = ContextualRelevancyMetric(model = llm_evaluator, include_reason = True)
-    time.sleep(5)
+    # con_rel = ContextualRelevancyMetric(model = llm_evaluator, include_reason = True)
+    # time.sleep(10)
     ans_rel = AnswerRelevancyMetric(model = llm_evaluator, include_reason = True)
-    time.sleep(5)
+    time.sleep(10)
     faith = FaithfulnessMetric(model = llm_evaluator, include_reason = True)
-    time.sleep(5)
+    time.sleep(10)
 
     testcase = LLMTestCase(
         input = question,

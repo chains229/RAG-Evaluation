@@ -23,6 +23,8 @@ def eval(df):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
         ref_required_result = ref_required_testcase(questions[index], responses[index], answers[index], levels[index])
         
+        print("Done evaluating at index", index)
+
         eval_results.append({
             "_id": ids[index],
             "con_rel_score": ref_free_result[0]["score"],
