@@ -6,6 +6,7 @@ import google.generativeai as genai
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams, LLMTestCase
 from evaluate.utils import eval_steps
+import time
 
 
 def ref_required_testcase(question: str, response: str, answer: str, level: str):
@@ -35,6 +36,7 @@ def ref_required_testcase(question: str, response: str, answer: str, level: str)
     )
 
     correctness_metric.measure(test_case)
+    time.sleep(5)
 
     return {
             'metric': 'Correctness',
