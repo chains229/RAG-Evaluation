@@ -13,10 +13,10 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
             Each metric contains the score and reason assigned by LLM.
 
     """
-    
-    con_rel = ContextualRelevancyMetric(model = CustomGemini, include_reason = True)
-    ans_rel = AnswerRelevancyMetric(model = CustomGemini, include_reason = True)
-    faith = FaithfulnessMetric(model = CustomGemini, include_reason = True)
+    llm_evaluator = CustomGemini()
+    con_rel = ContextualRelevancyMetric(model = llm_evaluator, include_reason = True)
+    ans_rel = AnswerRelevancyMetric(model = llm_evaluator, include_reason = True)
+    faith = FaithfulnessMetric(model = llm_evaluator, include_reason = True)
 
     testcase = LLMTestCase(
         input = question,

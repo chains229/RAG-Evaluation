@@ -1,9 +1,7 @@
 from pydantic import BaseModel
 import google.generativeai as genai
 import instructor
-
 from deepeval.models import DeepEvalBaseLLM
-
 
 class CustomGemini(DeepEvalBaseLLM):
     """

@@ -1,5 +1,6 @@
 # Code hasn't been done yet, thanks for visiting anyway
 import instructor
+from evaluate.utils import CustomGemini
 from pydantic import BaseModel
 import google.generativeai as genai
 from deepeval.metrics import GEval
@@ -17,8 +18,10 @@ def ref_required_testcase(question: str, response: str, answer: str, level: str)
             Each metric contains the score and reason assigned by LLM.
 
     """
+    llm_evaluator = CustomGemini()
     correctness_metric = GEval(
         name="Correctness",
+        model=llm_evaluator,
         criteria="Determine whether the actual output is factually correct based on the expected output.",
         # NOTE: you can only provide either criteria or evaluation_steps, and not both
         evaluation_steps=eval_steps(level),
