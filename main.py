@@ -35,7 +35,7 @@ def main(args):
     else:
         for l in ["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create"]:
             level_df = rag_merged_df[rag_merged_df["level"] == l]
-            evaluator.eval_avg(rag_merged_df, args.level, args.model_name)
+            evaluator.eval_avg(level_df, l, args.model_name)
 
     print("_____________________________________________________")
     print("Done evaluating :3")
@@ -43,7 +43,8 @@ def main(args):
 
     # Merge score -> save to a csv
     domain = "news" if "news" in args.data_path else "laws"
-    file_name = f"result_{args.level}_{reader_model_name}_{domain}.csv"
+    generator_model_name = reader_model_name.split('/')[1]
+    file_name = f"result_{args.level}_{generator_model_name}_{domain}.csv"
     rag_merged_df.to_csv(file_name)
 
     print("_____________________________________________________")

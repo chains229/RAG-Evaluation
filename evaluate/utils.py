@@ -37,7 +37,9 @@ class CustomGemini(DeepEvalBaseLLM):
         return "Gemini 1.5"
 
 def eval_steps(level: str):
-    "Contains the evaluation steps for each level. This will be used for reference-required metrics"
+    """
+    Contains the evaluation steps for each level. This will be used for reference-required metrics
+    """
     if level == "Remember":
         return ["Check if the generated answer is correct and directly relevant to the user query"]
     elif level == "Understand":
