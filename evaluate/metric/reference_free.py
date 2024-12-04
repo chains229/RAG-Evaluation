@@ -28,25 +28,25 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
         retrieval_context = relevant_docs
     )
 
-    con_rel_score = con_rel.measure(testcase)
-    ans_rel_score = ans_rel.measure(testcase)
-    fai_score = faith.measure(testcase)
+    con_rel.measure(testcase)
+    ans_rel.measure(testcase)
+    faith.measure(testcase)
 
     scores = [
         {
             'metric': 'Context Relevance',
-            'score': con_rel_score.score,
-            'reason': con_rel_score.reason
+            'score': con_rel.score,
+            'reason': con_rel.reason
         },
         {
             'metric': 'Answer Relevance',
-            'score': ans_rel_score.score,
-            'reason': ans_rel_score.reason
+            'score': ans_rel.score,
+            'reason': ans_rel.reason
         },
         {
             'metric': 'Answer Faithfulness',
-            'score': fai_score.score,
-            'reason': fai_score.reason
+            'score': faith.score,
+            'reason': faith.reason
         }
     ]
 
