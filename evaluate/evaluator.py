@@ -43,12 +43,12 @@ def eval_avg(df, level, model_name):
     print("________________")
     print(f"Result for model {model_name} at level {level}:")
     
-    rel_col_score = stat.mean(df["rel_col_score"].tolist())
-    ans_col_score = stat.mean(df["ans_col_score"].tolist())
+    con_rel_score = stat.mean(df["con_rel_score"].tolist())
+    ans_rel_score = stat.mean(df["ans_rel_score"].tolist())
     fai_score = stat.mean(df["fai_score"].tolist())
     cor_score = stat.mean(df["cor_score"].tolist())
 
-    print("Context Relevance Score:", rel_col_score)
-    print("Answer Relevance Score:", ans_col_score)
+    print("Context Relevance Score:", con_rel_score)
+    print("Answer Relevance Score:", ans_rel_score)
     print("Faithfulness Score:", fai_score)
     print("Correctness Score:", cor_score)
