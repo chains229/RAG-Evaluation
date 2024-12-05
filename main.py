@@ -6,6 +6,7 @@ import pandas as pd
 def main(args):
     reader_model_name = args.model_name
     faiss_folder = args.faiss_folder
+    topk = args.topk
 
     # Load data
     question_df = pd.read_csv(args.data_path)
@@ -23,7 +24,7 @@ def main(args):
     print("_____________________________________________________")
 
     # RAG pipeline 
-    rag_results = rag.test(reader_model_name, faiss_folder, question_df)
+    rag_results = rag.test(reader_model_name, faiss_folder, question_df, topk)
     rag_merged_df = question_df.merge(rag_results, on="_id", how="inner")
 
     print("_____________________________________________________")
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('--faiss_folder', type=str, help="Path to the knowledge database")
     parser.add_argument('--level', type=str, choices=["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create", "All"], default="All")
     parser.add_argument('--demo', type=str, choices=['true','false'], help="Run demo, including 10 first rows, to test if code works", default="false")
+    parser.add_argument('--topk', type=int, help="Number of retrieved documents for each query")
 
     args = parser.parse_args()
 

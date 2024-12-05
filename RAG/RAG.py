@@ -11,10 +11,12 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document as LangchainDocument
 from RAG.utils import load_reader_model, create_prompt_template
 
-# Function to answer a question with RAG
 def answer_one_sample(question: str, llm: Pipeline, knowledge_index: FAISS,
-    rag_prompt_template, num_retrieved_docs: int = 15, num_docs_final: int = 5,
-) -> Tuple[str, List[LangchainDocument]]:
+    rag_prompt_template, num_retrieved_docs: int = 10,) -> Tuple[str, List[LangchainDocument]]:
+    """
+    Function to answer a question with RAG
+    """
+    
     # Retrieve documents
     relevant_docs = knowledge_index.similarity_search(query=question, k=num_retrieved_docs)
     relevant_docs_content = [doc.page_content for doc in relevant_docs]
@@ -35,7 +37,7 @@ def answer_one_sample(question: str, llm: Pipeline, knowledge_index: FAISS,
     return answer, relevant_docs
 
 
-def test(reader_model_name: str, faiss_folder: str, questions_df):
+def test(reader_model_name: str, faiss_folder: str, questions_df, topk):
     """
     Run RAG pipeline on our benchmark.
 
@@ -44,7 +46,7 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
         faiss_folder: Path to the database folder
         questions_df: DataFrame of the CSV file containing the questions in our benchmark.
 
-    Return: List of results, including questions, answers and retrieved contexts.
+    Return: DataFrame of results, including questions, answers and retrieved contexts.
     """
     
     # Initialize components
@@ -72,7 +74,7 @@ def test(reader_model_name: str, faiss_folder: str, questions_df):
     results = []
     for i in range(len(questions)):
         response, relevant_docs = answer_one_sample(
-            questions[i], llm, knowledge_index, rag_prompt_template
+            questions[i], llm, knowledge_index, rag_prompt_template, num_retrieved_docs=topk
         )
         results.append({
             "_id": ids[i],
