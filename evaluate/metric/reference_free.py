@@ -50,6 +50,5 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
         }
     ]
 
-    print(scores)
     return scores
 

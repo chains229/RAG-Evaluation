@@ -28,7 +28,8 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
     print("Number of documents:", len(documents1))
     len_doc = len(documents1) if demo == False else int(len(documents1)/10)
     for ind in range(len_doc):
-        print("Loading document", ind)
+        if ind%100 == 0:    
+            print("Loading document", ind)
         RAW_KNOWLEDGE_BASE.append(LangchainDocument(page_content=documents1[ind]))
 
     NEWS_SEPARATORS = [
@@ -53,7 +54,8 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
 
     docs_processed = []
     for j in range(len(RAW_KNOWLEDGE_BASE)):
-        print(j)
+        if j%100 == 0:
+            print(j)
         docs_processed += text_splitter.split_documents([RAW_KNOWLEDGE_BASE[j]])
 
     return docs_processed

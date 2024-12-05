@@ -9,10 +9,14 @@ def main(args):
 
     # Load data
     question_df = pd.read_csv(args.data_path)
-    if args.level != "All":
+    if args.level != "All": 
         question_df = question_df[question_df['level'] == args.level]
+    
     if args.demo == "true":
-        question_df = question_df.head(10)
+        if args.level == "All": # Pick 10 randoms rows within each level for demo
+            question_df = question_df.groupby('level', group_keys=False).apply(lambda x: x.sample(n=10, random_state=42))  
+        else: # Pick 10 first rows from the specific level
+            question_df = question_df.head(10)
 
     print("_____________________________________________________")
     print("Done loading data :3")

@@ -43,5 +43,4 @@ def ref_required_testcase(question: str, response: str, answer: str, level: str)
             'score': correctness_metric.score,
             'reason': correctness_metric.reason
         }
-    print(cor_score)
     return cor_score
