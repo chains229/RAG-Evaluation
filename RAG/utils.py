@@ -35,10 +35,8 @@ def create_prompt_template(tokenizer):
     prompt_in_chat_format = [
         {
             "role": "system",
-            "content": """Using the information contained in the context, give a comprehensive answer to the question.
-Respond only to the question asked, response should be concise and relevant to the question.
-Provide the number of the source document when relevant.
-If the answer cannot be deduced from the context, do not give an answer.
+            "content": """Dựa vào thông tin trong ngữ cảnh, hãy đưa ra câu trả lời đầy đủ cho câu hỏi. Chỉ trả lời câu hỏi được hỏi, câu trả lời phải ngắn gọn và phù hợp với câu hỏi. Cung cấp số của tài liệu nguồn khi cần thiết. 
+            Nếu không thể suy ra câu trả lời từ ngữ cảnh, không trả lời.
 """
         },
         {
@@ -46,11 +44,11 @@ If the answer cannot be deduced from the context, do not give an answer.
             "content": """Context:
 {context}
 ---
-Now here is the question you need to answer.
+Dưới đây là câu hỏi bạn cần trả lời.
 
 Question: {question}
 
-**give in vietnamese language**
+**trả lời bằng tiếng Việt**
 """
         }
     ]

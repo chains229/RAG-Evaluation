@@ -33,6 +33,7 @@ def chunk_documents(documents: str, chunk_size: int, chunk_overlap: int, tokeniz
         RAW_KNOWLEDGE_BASE.append(LangchainDocument(page_content=documents1[ind]))
 
     NEWS_SEPARATORS = [
+        "\n\n",
         "\n",     # Line breaks
         "\t",     # Tabs
         ". ",     # Sentences
