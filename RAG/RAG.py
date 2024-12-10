@@ -81,7 +81,8 @@ def test(reader_model_name: str, faiss_folder: str, questions_df, topk):
             "response": response,
             "retrieved_context": [doc.page_content for doc in relevant_docs]
         })
-        print(i)
+        print(questions[i])
+        print(relevant_docs)
         print(response)
 
     return pd.DataFrame(results)
