@@ -36,7 +36,6 @@ def ref_required_testcase(question: str, response: str, answer: str, level: str)
     )
 
     correctness_metric.measure(test_case)
-    time.sleep(5)
 
     cor_score = {
             'metric': 'Correctness',
