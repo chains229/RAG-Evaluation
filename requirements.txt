@@ -1,4 +1,3 @@
-argparse
 sentence-transformers
 langchain
 langchain-community
