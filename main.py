@@ -38,7 +38,7 @@ def main(args):
     if args.level != "All":
         evaluator.eval_avg(rag_merged_df, args.level, args.model_name)
     else:
-        for l in ["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create"]:
+        for l in rag_merged_df['level'].unique().tolist():
             level_df = rag_merged_df[rag_merged_df["level"] == l]
             evaluator.eval_avg(level_df, l, args.model_name)
 

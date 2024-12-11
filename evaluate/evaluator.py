@@ -15,7 +15,7 @@ def eval(df):
         Reference-required metrics: As proposed in our paper. 
     """
 
-    columns = ["question", "answer", "response", "retrieved_context", "_id", "level"]
+    columns = ["question", "answer", "response", "relevant_documents", "meta", "level"]
     questions, answers, responses, contexts, ids, levels = (df[col].tolist() for col in columns)
 
     eval_results = []
