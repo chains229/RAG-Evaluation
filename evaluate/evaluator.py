@@ -26,7 +26,7 @@ def eval(df):
         print("Done evaluating at index", index)
 
         eval_results.append({
-            "_id": ids[index],
+            "meta": ids[index],
             "con_rel_score": ref_free_result[0]["score"],
             "con_rel_reason": ref_free_result[0]["reason"],
             "ans_rel_score": ref_free_result[1]["score"],

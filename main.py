@@ -25,7 +25,7 @@ def main(args):
 
     # RAG pipeline 
     rag_results = rag.test(reader_model_name, faiss_folder, question_df, topk)
-    rag_merged_df = question_df.merge(rag_results, on="_id", how="inner")
+    rag_merged_df = question_df.merge(rag_results, on="meta", how="inner")
 
     print("_____________________________________________________")
     print("Done performing RAG :3")
@@ -33,7 +33,7 @@ def main(args):
 
     # Evaluation pipeline -> return _id, score
     eval_results = evaluator.eval(rag_merged_df)
-    rag_merged_df = rag_merged_df.merge(eval_results, on="_id", how="inner")
+    rag_merged_df = rag_merged_df.merge(eval_results, on="meta", how="inner")
 
     if args.level != "All":
         evaluator.eval_avg(rag_merged_df, args.level, args.model_name)
