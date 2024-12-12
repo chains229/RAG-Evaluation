@@ -15,7 +15,7 @@ def eval(df):
         Reference-required metrics: As proposed in our paper. 
     """
 
-    columns = ["question", "answer", "response", "relevant_documents", "meta", "level"]
+    columns = ["question", "answer", "response", "relevant_documents", "_id", "level"]
     questions, answers, responses, contexts, ids, levels = (df[col].tolist() for col in columns)
 
     eval_results = []
@@ -26,7 +26,7 @@ def eval(df):
         print("Done evaluating at index", index)
 
         eval_results.append({
-            "meta": ids[index],
+            "_id": ids[index],
             "con_rel_score": ref_free_result[0]["score"],
             "con_rel_reason": ref_free_result[0]["reason"],
             "ans_rel_score": ref_free_result[1]["score"],

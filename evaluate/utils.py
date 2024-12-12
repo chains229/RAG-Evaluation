@@ -18,6 +18,7 @@ class CustomGemini(DeepEvalBaseLLM):
         instructor_client = instructor.from_gemini(
             client=client,
             mode=instructor.Mode.GEMINI_JSON,
+            temperature=0.0,
         )
         resp = instructor_client.messages.create(
             messages=[
