@@ -8,7 +8,7 @@ class CustomGemini(DeepEvalBaseLLM):
     Define Gemini as a Judge for deepeval
     """
     def __init__(self):
-        self.model = genai.GenerativeModel("models/gemini-1.5-pro-002")
+        self.model = genai.GenerativeModel("models/gemini-2.0-flash-exp")
 
     def load_model(self):
         return self.model
