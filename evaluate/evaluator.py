@@ -1,9 +1,9 @@
 from evaluate.metric.reference_free import ref_free_testcase
-from evaluate.metric.reference_required import ref_required_testcase
+from evaluate.metric.reference_required import ref_required_testcase, ref_required_testcase_custom
 import pandas as pd
 import statistics as stat
 
-def eval(df):
+def eval(df, llm_judge_name: str = "models/gemini-1.5-pro-002"):
     """
     Evaluate the performance of RAG systems.
 
@@ -21,7 +21,7 @@ def eval(df):
     eval_results = []
     for index in range(len(questions)):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
-        ref_required_result = ref_required_testcase(questions[index], responses[index], answers[index], levels[index])
+        ref_required_result = ref_required_testcase_custom(questions[index], responses[index], answers[index], levels[index], llm_judge_name)
         
         print("Done evaluating at index", index)
 

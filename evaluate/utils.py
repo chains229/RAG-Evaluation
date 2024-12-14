@@ -38,6 +38,13 @@ class CustomGemini(DeepEvalBaseLLM):
     def get_model_name(self):
         return "Gemini 1.5"
 
+def prompt(level: str, question: str, response: str, answer: str):
+    """
+    Contains custom prompts for our custom reference-required metric
+    """
+
+
+
 def eval_steps(level: str):
     """
     Contains the evaluation steps for each level. This will be used for reference-required metrics
