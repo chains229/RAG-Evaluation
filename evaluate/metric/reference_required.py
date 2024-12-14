@@ -7,13 +7,19 @@ from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams, LLMTestCase
 from evaluate.utils import eval_steps
 import time
-import typing
+from typing import TypedDict
 
-class answer_template(typing.TypedDict):
-    score: int
-    reason: dict
+class Understand_AnswerTemplate(TypedDict):
+    content_coverage_score: float
+    content_coverage_justification: str
+    information_accuracy_score: float
+    information_accuracy_justification: str
+    paraphrasing_quality_score: float
+    paraphrasing_quality_justification: str
+    overall_similarity_score: float
+    overall_similarity_justification: str
 
-def ref_required_testcase_custom(question: str, response: str, answer: str, level: str, llm_judge_name: str):
+def ref_required_testcase_custom(question: str, response: str, answer: str, level: str, llm_judge_name: str, domain: str):
     """
     Using LLM as a Judge to calculate reference-required metrics using our custom prompt.
 
@@ -24,7 +30,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     model = genai.GenerativeModel(llm_judge_name)
 
     correctness_metric = model.generate_content(
-        prompt(level, question, response, answer),
+        prompt(level, question, response, answer, domain),
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template), temperature = 0.0)
     cor_score = {
