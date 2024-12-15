@@ -145,12 +145,8 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
         ]
     }
 
-    # Ensure the level exists and calculate the average score
-    if level not in level_fields:
-        raise ValueError(f"Invalid level '{level}'. Must be one of {list(level_fields.keys())}.")
-
     if level in "Remember_Analyze":
-        scores = responsed_metric.get(level_fields[level][0], 0) 
+        scores = responsed_metric.get(level_fields["Remember_Analyze"][0], 0) 
     elif level == "Evaluate_Law" or level == "Create":
         scores = [responsed_metric.get(field, 0) for field in level_fields[level]]
         return sum(scores) if scores else 0.0
