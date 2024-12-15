@@ -91,12 +91,12 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     else:
         l = level
 
-    average_score = calculate_average_score(responsed_metric, l)
+    average_score = calculate_average_score(responsed_metric.text, l)
     
     cor_score = {
             'metric': 'Correctness',
             'core': average_score,
-            'reason': responsed_metric
+            'reason': responsed_metric.text
         }
     print("Correctness score:", average_score)
     return cor_score
