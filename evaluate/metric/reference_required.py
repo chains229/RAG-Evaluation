@@ -10,16 +10,6 @@ from evaluate.utils import eval_steps
 import time
 from typing import TypedDict
 
-# Dictionary mapping levels to their respective templates
-LEVEL_TO_TEMPLATE = {
-    "Remember_Analyze": Remember_Analyze_AnswerTemplate,
-    "Understand": Understand_AnswerTemplate,
-    "Apply": Apply_AnswerTemplate,
-    "Evaluate_News": Evaluate_News_AnswerTemplate,
-    "Evaluate_Law": Evaluate_Law_AnswerTemplate,
-    "Create": Create_AnswerTemplate
-}
-
 class Remember_Analyze_AnswerTemplate(TypedDict):
     accuracy_score: int
     accuracy_justification: str
@@ -69,6 +59,16 @@ class Create_AnswerTemplate(TypedDict):
     spelling_and_grammar_justification: str
     creativity_score: float
     creativity_justification: str
+
+# Dictionary mapping levels to their respective templates
+LEVEL_TO_TEMPLATE = {
+    "Remember_Analyze": Remember_Analyze_AnswerTemplate,
+    "Understand": Understand_AnswerTemplate,
+    "Apply": Apply_AnswerTemplate,
+    "Evaluate_News": Evaluate_News_AnswerTemplate,
+    "Evaluate_Law": Evaluate_Law_AnswerTemplate,
+    "Create": Create_AnswerTemplate
+}
 
 def ref_required_testcase_custom(question: str, response: str, answer: str, level: str, llm_judge_name: str, domain: str):
     """

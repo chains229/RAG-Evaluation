@@ -1,5 +1,5 @@
 from evaluate.metric.reference_free import ref_free_testcase
-from evaluate.metric.reference_required import ref_required_testcase, ref_required_testcase_custom
+from evaluate.metric.reference_required import ref_required_testcase, ref_required_testcase_custom, Remember_Analyze_AnswerTemplate, Understand_AnswerTemplate, Apply_AnswerTemplate, Evaluate_Law_AnswerTemplate, Evaluate_News_AnswerTemplate, Create_AnswerTemplate
 import pandas as pd
 import statistics as stat
 
