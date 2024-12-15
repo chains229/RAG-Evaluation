@@ -87,7 +87,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
-    response = json.dumps(json.loads(responsed_metric.text), indent=4)
+    response = json.loads(responsed_metric.text)
     print(type(response))
     print(response)
 
