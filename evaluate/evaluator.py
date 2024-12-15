@@ -3,7 +3,7 @@ from evaluate.metric.reference_required import ref_required_testcase, ref_requir
 import pandas as pd
 import statistics as stat
 
-def eval(df, llm_judge_name: str = "models/gemini-1.5-pro-002"):
+def eval(df, domain: str = "News", llm_judge_name: str = "models/gemini-1.5-pro-002"):
     """
     Evaluate the performance of RAG systems.
 
@@ -21,7 +21,7 @@ def eval(df, llm_judge_name: str = "models/gemini-1.5-pro-002"):
     eval_results = []
     for index in range(len(questions)):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
-        ref_required_result = ref_required_testcase_custom(questions[index], responses[index], answers[index], levels[index], llm_judge_name)
+        ref_required_result = ref_required_testcase_custom(questions[index], responses[index], answers[index], levels[index], llm_judge_name, domain)
         
         print("Done evaluating at index", index)
 
