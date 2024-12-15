@@ -87,7 +87,10 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
-    response = json.dumps(json.loads(responsed_metric.text))
+    response = json.dumps(json.loads(responsed_metric.text), indent=4)
+    print(type(response))
+    print(response)
+
     if level == "Evaluate":
         l = level + "_" + domain
     else:
@@ -103,7 +106,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     print("Correctness score:", average_score)
     return cor_score
 
-def calculate_average_score(responsed_metric: dict, level: str) -> float:
+def calculate_average_score(responsed_metric, level: str) -> float:
     """
     Calculate the average score of all metrics in a given level.
 
