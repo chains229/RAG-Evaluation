@@ -86,19 +86,19 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         contents = prompt(level, question, response, answer, domain),
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
-    print(responsed_metric)
-    responsed_metric = json.dumps(json.loads(responsed_metric.text))
+    
+    response = json.dumps(json.loads(responsed_metric.text))
     if level == "Evaluate":
         l = level + "_" + domain
     else:
         l = level
 
-    average_score = calculate_average_score(responsed_metric, l)
+    average_score = calculate_average_score(response, l)
     
     cor_score = {
             'metric': 'Correctness',
             'core': average_score,
-            'reason': responsed_metric
+            'reason': response
         }
     print("Correctness score:", average_score)
     return cor_score
@@ -148,7 +148,8 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
     }
 
     if level in "Remember_Analyze":
-        scores = responsed_metric[level_fields["Remember_Analyze"][0]] 
+        scores = responsed_metric["accuracy_score"] 
+        return float(scores)
     elif level == "Evaluate_Law" or level == "Create":
         scores = [responsed_metric[field] for field in level_fields[level]]
         return sum(scores) if scores else 0.0
