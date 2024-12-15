@@ -48,8 +48,7 @@ Instructions:
 ---
 **Input:**
 
-"""
-        + input(level, question, response, answer) + """
+""" + input(level, question, response, answer) + """
 
 ---
 **Output Format:**
@@ -90,8 +89,7 @@ Instructions:
 ---
 **Input:**
 
-"""
-        + input(level, question, response, answer) + """
+""" + input(level, question, response, answer) + """
 
 ---
 **Output Format:**
