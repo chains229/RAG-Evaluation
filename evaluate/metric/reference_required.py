@@ -9,6 +9,7 @@ from deepeval.test_case import LLMTestCaseParams, LLMTestCase
 from evaluate.utils import eval_steps
 import time
 from typing_extensions import TypedDict
+import json
 
 class Remember_Analyze_AnswerTemplate(TypedDict):
     accuracy_score: int
@@ -86,17 +87,18 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     print(responsed_metric)
+    responsed_metric = json.dumps(json.loads(responsed_metric.text))
     if level == "Evaluate":
         l = level + "_" + domain
     else:
         l = level
 
-    average_score = calculate_average_score(responsed_metric.text, l)
+    average_score = calculate_average_score(responsed_metric, l)
     
     cor_score = {
             'metric': 'Correctness',
             'core': average_score,
-            'reason': responsed_metric.text
+            'reason': responsed_metric
         }
     print("Correctness score:", average_score)
     return cor_score
