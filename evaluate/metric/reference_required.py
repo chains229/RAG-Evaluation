@@ -62,9 +62,10 @@ class Create_AnswerTemplate(TypedDict):
 
 # Dictionary mapping levels to their respective templates
 LEVEL_TO_TEMPLATE = {
-    "Remember_Analyze": Remember_Analyze_AnswerTemplate,
+    "Remember": Remember_Analyze_AnswerTemplate,
     "Understand": Understand_AnswerTemplate,
     "Apply": Apply_AnswerTemplate,
+    "Analyze": Remember_Analyze_AnswerTemplate,
     "Evaluate_News": Evaluate_News_AnswerTemplate,
     "Evaluate_Law": Evaluate_Law_AnswerTemplate,
     "Create": Create_AnswerTemplate
