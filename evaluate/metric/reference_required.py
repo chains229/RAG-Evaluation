@@ -8,7 +8,7 @@ from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams, LLMTestCase
 from evaluate.utils import eval_steps
 import time
-from typing import TypedDict
+from typing_extensions import TypedDict
 
 class Remember_Analyze_AnswerTemplate(TypedDict):
     accuracy_score: int
