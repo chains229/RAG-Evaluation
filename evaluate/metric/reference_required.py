@@ -84,7 +84,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     responsed_metric = model.generate_content(
         prompt(level, question, response, answer, domain),
         generation_config=genai.GenerationConfig(
-            response_mime_type="application/json", response_schema=answer_template), temperature = 0.0)
+            response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
     if level == "Evaluate":
         l = level + "_" + domain
