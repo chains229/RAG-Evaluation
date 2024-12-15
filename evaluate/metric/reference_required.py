@@ -146,11 +146,11 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
     }
 
     if level in "Remember_Analyze":
-        scores = responsed_metric.get(level_fields["Remember_Analyze"][0], 0) 
+        scores = responsed_metric[level_fields["Remember_Analyze"][0]] 
     elif level == "Evaluate_Law" or level == "Create":
-        scores = [responsed_metric.get(field, 0) for field in level_fields[level]]
+        scores = [responsed_metric[field] for field in level_fields[level]]
         return sum(scores) if scores else 0.0
-    scores = [responsed_metric.get(field, 0) for field in level_fields[level]]
+    scores = [responsed_metric[field] for field in level_fields[level]]
     return sum(scores) / len(scores) if scores else 0.0
 
 def ref_required_testcase(question: str, response: str, answer: str, level: str):
