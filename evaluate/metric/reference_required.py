@@ -88,8 +88,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
     response = json.loads(responsed_metric.text)
-    print(type(response))
-    print(response)
+
 
     if level == "Evaluate":
         l = level + "_" + domain
@@ -100,7 +99,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     
     cor_score = {
             'metric': 'Correctness',
-            'core': average_score,
+            'score': average_score,
             'reason': response
         }
     print("Correctness score:", average_score)
