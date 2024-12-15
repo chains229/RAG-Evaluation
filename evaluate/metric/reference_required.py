@@ -82,7 +82,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     model = genai.GenerativeModel(llm_judge_name)
     answer_template = LEVEL_TO_TEMPLATE[level]
     responsed_metric = model.generate_content(
-        prompt(level, question, response, answer, domain),
+        contents = prompt(level, question, response, answer, domain),
         generation_config=genai.GenerationConfig(
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
