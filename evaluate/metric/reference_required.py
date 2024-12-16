@@ -88,7 +88,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
             response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
     response = json.loads(responsed_metric.text)
-
+    print(response)
 
     if level == "Evaluate":
         l = level + "_" + domain
@@ -105,7 +105,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     print("Correctness score:", average_score)
     return cor_score
 
-def calculate_average_score(responsed_metric, level: str) -> float:
+def calculate_average_score(responsed_metric: dict, level: str) -> float:
     """
     Calculate the average score of all metrics in a given level.
 
@@ -153,9 +153,11 @@ def calculate_average_score(responsed_metric, level: str) -> float:
         scores = responsed_metric["accuracy_score"] 
         return float(scores)
     elif level == "Evaluate_Law" or level == "Create":
-        scores = [responsed_metric[field] for field in level_fields[level]]
+        # scores = [responsed_metric[field] for field in level_fields[level]]
+        # return sum(scores) if scores else 0.0
+        scores = [value for key, value in responsed_metric.items() if "score" in key and isinstance(value, (int, float))]        
         return sum(scores) if scores else 0.0
-    scores = [responsed_metric[field] for field in level_fields[level]]
+    scores = [value for key, value in responsed_metric.items() if "score" in key and isinstance(value, (int, float))]        
     return sum(scores) / len(scores) if scores else 0.0
 
 def ref_required_testcase(question: str, response: str, answer: str, level: str):

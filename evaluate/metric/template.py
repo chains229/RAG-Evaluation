@@ -166,9 +166,9 @@ Instructions:
 **Output Format:**
 
 {
-  "accuracy_score": int,
+  "accuracy_score": float,
   "accuracy_justification": str,
-  "reasoning_similarity_score": int,
+  "reasoning_similarity_score": float,
   "reasoning_similarity_justification": str,
 }
 ---
