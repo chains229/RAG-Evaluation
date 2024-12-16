@@ -98,7 +98,13 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
                 continue
             break
         if _ == 9: 
-            raise ValueError("Exceed attemp limit")
+            #raise ValueError("Exceed attemp limit")
+            cor_score = {
+                'metric': 'Correctness',
+                'score': 0.0,
+                'reason': "Failed to transform output to json. Details:" + responsed_metric.text
+            }
+            return cor_score
     
     print(response)
 
