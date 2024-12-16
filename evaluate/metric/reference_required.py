@@ -85,41 +85,37 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     model = genai.GenerativeModel(llm_judge_name)
     answer_template = LEVEL_TO_TEMPLATE[level]
     
-    for _ in range(0,10):
-        try:
-            responsed_metric = model.generate_content(
+    try:
+        responsed_metric = model.generate_content(
                 contents = prompt(level, question, response, answer, domain),
                 generation_config=genai.GenerationConfig(
                 response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
-            response = json.loads(responsed_metric.text)
-            print(response)
+        response = json.loads(responsed_metric.text)
+        print(response)
 
-            if level == "Evaluate":
-                l = level + "_" + domain
-            else:
-                l = level
+        if level == "Evaluate":
+            l = level + "_" + domain
+        else:
+            l = level
 
-            average_score = calculate_average_score(response, l)
+        average_score = calculate_average_score(response, l)
     
-            cor_score = {
+        cor_score = {
                     'metric': 'Correctness',
                     'score': average_score,
                     'reason': response
                 }
-            print("Correctness score:", average_score)
-            return cor_score
-        except:
-            continue
-       
-    #raise ValueError("Exceed attemp limit")
-    cor_score = {
+        print("Correctness score:", average_score)
+        return cor_score
+    except:
+        cor_score = {
             'metric': 'Correctness',
             'score': 0.0,
             'reason': "Failed to transform output to json. Details:" + responsed_metric.text
         }
-    print(cor_score)
-    return cor_score
+        print(cor_score)
+        return cor_score
     
     
 
