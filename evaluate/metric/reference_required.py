@@ -10,6 +10,8 @@ from evaluate.utils import eval_steps
 import time
 from typing_extensions import TypedDict
 import json
+import sys
+sys.set_int_max_str_digits(10000)
 
 class Remember_Analyze_AnswerTemplate(TypedDict):
     accuracy_score: int
@@ -82,12 +84,22 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     """
     model = genai.GenerativeModel(llm_judge_name)
     answer_template = LEVEL_TO_TEMPLATE[level]
-    responsed_metric = model.generate_content(
-        contents = prompt(level, question, response, answer, domain),
-        generation_config=genai.GenerationConfig(
-            response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
     
-    response = json.loads(responsed_metric.text)
+    for _ in range(0,10):
+        while True:
+            try:
+                responsed_metric = model.generate_content(
+                    contents = prompt(level, question, response, answer, domain),
+                    generation_config=genai.GenerationConfig(
+                    response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
+    
+                response = json.loads(responsed_metric.text)
+            except:
+                continue
+            break
+        if _ == 9: 
+            raise ValueError("Exceed attemp limit")
+    
     print(response)
 
     if level == "Evaluate":
@@ -156,9 +168,9 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
         # scores = [responsed_metric[field] for field in level_fields[level]]
         # return sum(scores) if scores else 0.0
         scores = [value for key, value in responsed_metric.items() if "score" in key and isinstance(value, (int, float))]        
-        return sum(scores) if scores else 0.0
+        return sum(scores) / 10 if scores else 0.0
     scores = [value for key, value in responsed_metric.items() if "score" in key and isinstance(value, (int, float))]        
-    return sum(scores) / len(scores) if scores else 0.0
+    return sum(scores) / (len(scores)*10) if scores else 0.0
 
 def ref_required_testcase(question: str, response: str, answer: str, level: str):
     """
