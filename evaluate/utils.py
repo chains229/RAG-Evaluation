@@ -15,7 +15,7 @@ class CustomGemini(DeepEvalBaseLLM):
 
     def generate(self, prompt: str, schema: BaseModel) -> BaseModel:
         client = self.load_model()
-        model_config = {"temperature": 0.0, "maxOutputTokens": 2048}
+        model_config = {"temperature": 0.0, "max_output_tokens": 2048}
         instructor_client = instructor.from_gemini(
             client=client,
             mode=instructor.Mode.GEMINI_JSON,
