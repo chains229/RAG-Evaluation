@@ -26,27 +26,53 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
         retrieval_context = relevant_docs
     )
 
-    con_rel.measure(testcase)
-    ans_rel.measure(testcase)
-    faith.measure(testcase)
+    # Initialize scores list
+    scores = []
 
-    scores = [
-        {
+    # Context Relevance
+    try:
+        con_rel.measure(testcase)
+        scores.append({
             'metric': 'Context Relevance',
             'score': con_rel.score,
             'reason': con_rel.reason
-        },
-        {
+        })
+    except Exception as e:
+        scores.append({
+            'metric': 'Context Relevance',
+            'score': 0.0,
+            'reason': f'Error: {str(e)}'
+        })
+
+    # Answer Relevance
+    try:
+        ans_rel.measure(testcase)
+        scores.append({
             'metric': 'Answer Relevance',
             'score': ans_rel.score,
             'reason': ans_rel.reason
-        },
-        {
+        })
+    except Exception as e:
+        scores.append({
+            'metric': 'Answer Relevance',
+            'score': None,
+            'reason': f'Error: {str(e)}'
+        })
+
+    # Answer Faithfulness
+    try:
+        faith.measure(testcase)
+        scores.append({
             'metric': 'Answer Faithfulness',
             'score': faith.score,
             'reason': faith.reason
-        }
-    ]
+        })
+    except Exception as e:
+        scores.append({
+            'metric': 'Answer Faithfulness',
+            'score': None,
+            'reason': f'Error: {str(e)}'
+        })
 
     return scores
 

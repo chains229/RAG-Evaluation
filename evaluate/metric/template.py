@@ -17,11 +17,12 @@ def prompt(level: str, question: str, response: str, answer: str, domain: str):
 Instructions:
 - Evaluate the Generated Answer and provide a score of 1 or 0 based on the criteria above.
 - Use JSON format for output.
+- Accuracy should only have two values: 1 or 0
 ---
 **Output Format:**
 
 {
-  "accuracy_score": int,
+  "accuracy_score": int (1 or 0),
   "accuracy_justification": str,
 }
 """
