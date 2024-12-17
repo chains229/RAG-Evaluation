@@ -83,21 +83,20 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
     Return: Correctness score and its details provided by LLM
     """
     model = genai.GenerativeModel(llm_judge_name)
-    answer_template = LEVEL_TO_TEMPLATE[level]
+    if level == "Evaluate":
+        l = level + "_" + domain
+    else:
+        l = level
+    answer_template = LEVEL_TO_TEMPLATE[l]
     
     try:
         responsed_metric = model.generate_content(
                 contents = prompt(level, question, response, answer, domain),
                 generation_config=genai.GenerationConfig(
-                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0))
+                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0,maxOutputTokens = 2048))
     
         response = json.loads(responsed_metric.text)
         print(response)
-
-        if level == "Evaluate":
-            l = level + "_" + domain
-        else:
-            l = level
 
         average_score = calculate_average_score(response, l)
     
