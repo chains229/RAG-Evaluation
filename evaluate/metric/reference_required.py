@@ -93,7 +93,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         responsed_metric = model.generate_content(
                 contents = prompt(level, question, response, answer, domain),
                 generation_config=genai.GenerationConfig(
-                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0,maxOutputTokens = 2048))
+                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0, max_output_tokens = 2048))
     
         response = json.loads(responsed_metric.text)
         print(response)
