@@ -93,7 +93,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         responsed_metric = model.generate_content(
                 contents = prompt(level, question, response, answer, domain),
                 generation_config=genai.GenerationConfig(
-                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0,max_output_tokens = 2048))
+                response_mime_type="application/json", response_schema=answer_template, temperature = 1.0,max_output_tokens = 2048))
     
         response = json.loads(responsed_metric.text)
         print(response)
@@ -163,7 +163,7 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
     }
 
     if level in "Remember_Analyze":
-        scores = responsed_metric["accuracy_score"] 
+        scores = 1 if responsed_metric["accuracy_score"] > 0 else 0
         return float(scores)
     elif level == "Evaluate_Law" or level == "Create":
         # scores = [responsed_metric[field] for field in level_fields[level]]
