@@ -47,7 +47,7 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
             except Exception as e:
                 scores.append({
                     'metric': metric_name,
-                    'score': None,
+                    'score': 0.0,
                     'reason': f'Error: {str(e)}'
                 })
     
