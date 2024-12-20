@@ -27,10 +27,10 @@ def eval(df, domain: str = "News", llm_judge_name: str = "models/gemini-1.5-pro-
 
         con_rel_score = 0.0
         con_rel_reason = ""
-        ans_rel_score = score_value
-        ans_rel_reason = score_reason
-        fai_score = score_value
-        fai_reason = score_reason
+        ans_rel_score = 0.0
+        ans_rel_reason = ""
+        fai_score = 0.0
+        fai_reason = ""
     
         for score_dict in ref_free_result:
             metric_name = score_dict['metric']
