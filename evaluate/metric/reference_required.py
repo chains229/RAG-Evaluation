@@ -13,7 +13,7 @@ import json
 import sys
 sys.set_int_max_str_digits(10000)
 
-class Remember_Analyze_AnswerTemplate(TypedDict):
+class Remember_Apply_Analyze_AnswerTemplate(TypedDict):
     accuracy_score: int
     accuracy_justification: str
 
@@ -26,16 +26,6 @@ class Understand_AnswerTemplate(TypedDict):
     paraphrasing_quality_justification: str
     overall_similarity_score: int
     overall_similarity_justification: str
-
-class Apply_AnswerTemplate(TypedDict):
-    application_of_knowledge_score: int
-    application_of_knowledge_justification: str
-    completeness_score: int
-    completeness_justification: str
-    accuracy_score: int
-    accuracy_justification: str
-    practicality_score: int
-    practicality_justification: str
 
 class Evaluate_News_AnswerTemplate(TypedDict):
     perspective_diversity_score: int
@@ -65,10 +55,10 @@ class Create_AnswerTemplate(TypedDict):
 
 # Dictionary mapping levels to their respective templates
 LEVEL_TO_TEMPLATE = {
-    "Remember": Remember_Analyze_AnswerTemplate,
+    "Remember": Remember_Apply_Analyze_AnswerTemplate,
     "Understand": Understand_AnswerTemplate,
-    "Apply": Apply_AnswerTemplate,
-    "Analyze": Remember_Analyze_AnswerTemplate,
+    "Apply": Remember_Apply_Analyze_AnswerTemplate,
+    "Analyze": Remember_Apply_Analyze_AnswerTemplate,
     "Evaluate_News": Evaluate_News_AnswerTemplate,
     "Evaluate_Law": Evaluate_Law_AnswerTemplate,
     "Create": Create_AnswerTemplate
@@ -93,7 +83,7 @@ def ref_required_testcase_custom(question: str, response: str, answer: str, leve
         responsed_metric = model.generate_content(
                 contents = prompt(level, question, response, answer, domain),
                 generation_config=genai.GenerationConfig(
-                response_mime_type="application/json", response_schema=answer_template, temperature = 0.0,max_output_tokens = 2048))
+                response_mime_type="application/json", response_schema=answer_template, temperature = 1.0,max_output_tokens = 2048))
     
         response = json.loads(responsed_metric.text)
         print(response)
@@ -131,7 +121,7 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
     """
     # Define the fields to extract scores for each level
     level_fields = {
-        "Remember_Analyze": ["accuracy_score"],
+        "Remember_Apply_Analyze": ["accuracy_score"],
         "Understand": [
             "content_coverage_score",
             "information_accuracy_score",
@@ -162,7 +152,7 @@ def calculate_average_score(responsed_metric: dict, level: str) -> float:
         ]
     }
 
-    if level in "Remember_Analyze":
+    if level in "Remember_Apply_Analyze":
         scores = 1 if responsed_metric["accuracy_score"] > 0 else 0
         return float(scores)
     elif level == "Evaluate_Law" or level == "Create":

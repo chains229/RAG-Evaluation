@@ -21,20 +21,42 @@ def eval(df, domain: str = "News", llm_judge_name: str = "models/gemini-1.5-pro-
     eval_results = []
     for index in range(len(questions)):
         ref_free_result = ref_free_testcase(questions[index], responses[index], contexts[index])
-        ref_required_result = ref_required_testcase_custom(questions[index], responses[index], answers[index], levels[index], llm_judge_name, domain)
+        # ref_required_result = ref_required_testcase_custom(questions[index], responses[index], answers[index], levels[index], llm_judge_name, domain)
         
         print("Done evaluating at index", index)
 
+        con_rel_score = 0.0
+        con_rel_reason = ""
+        ans_rel_score = score_value
+        ans_rel_reason = score_reason
+        fai_score = score_value
+        fai_reason = score_reason
+    
+        for score_dict in ref_free_result:
+            metric_name = score_dict['metric']
+            score_value = score_dict['score']
+            score_reason = score_dict['reason']
+        
+            if metric_name == 'Context Relevance':
+                con_rel_score = score_value
+                con_rel_reason = score_reason
+            elif metric_name == 'Answer Relevance':
+                ans_rel_score = score_value
+                ans_rel_reason = score_reason
+            elif metric_name == 'Answer Faithfulness':
+                fai_score = score_value
+                fai_reason = score_reason
+
         eval_results.append({
             "_id": ids[index],
-            "con_rel_score": ref_free_result[0]["score"],
-            "con_rel_reason": ref_free_result[0]["reason"],
-            "ans_rel_score": ref_free_result[1]["score"],
-            "ans_rel_reason": ref_free_result[1]["reason"],
-            "fai_score": ref_free_result[2]["score"],
-            "fai_reason": ref_free_result[2]["reason"],
-            "cor_score": ref_required_result["score"],
-            "cor_reason": ref_required_result["reason"]
+            "con_rel_score": con_rel_score,
+            "con_rel_reason": con_rel_reason,
+            "ans_rel_score": ans_rel_score,
+            "ans_rel_reason": ans_rel_reason,
+            "fai_score": fai_score,
+            "fai_reason": fai_reason,
+            # "cor_score": ref_required_result["score"],
+            # "cor_reason": ref_required_result["reason"]
         })
     
     return pd.DataFrame(eval_results)
@@ -46,9 +68,9 @@ def eval_avg(df, level, model_name):
     con_rel_score = stat.mean(df["con_rel_score"].tolist())
     ans_rel_score = stat.mean(df["ans_rel_score"].tolist())
     fai_score = stat.mean(df["fai_score"].tolist())
-    cor_score = stat.mean(df["cor_score"].tolist())
+    # cor_score = stat.mean(df["cor_score"].tolist())
 
     print("Context Relevance Score:", con_rel_score)
     print("Answer Relevance Score:", ans_rel_score)
     print("Faithfulness Score:", fai_score)
-    print("Correctness Score:", cor_score)
+    # print("Correctness Score:", cor_score)

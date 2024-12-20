@@ -13,9 +13,9 @@ def ref_free_testcase(question: str, response: str, relevant_docs):
     
     # Create metrics outside of try-except to reduce overhead
     metrics = [
-        ('Context Relevance', ContextualRelevancyMetric(model=llm_evaluator, include_reason=True)),
-        ('Answer Relevance', AnswerRelevancyMetric(model=llm_evaluator, include_reason=True)),
-        ('Answer Faithfulness', FaithfulnessMetric(model=llm_evaluator, include_reason=True))
+        ('Context Relevance', ContextualRelevancyMetric(threshold = 0.0, model=llm_evaluator, include_reason=True)),
+        ('Answer Relevance', AnswerRelevancyMetric(threshold = 0.0,model=llm_evaluator, include_reason=True)),
+        ('Answer Faithfulness', FaithfulnessMetric(threshold = 0.0,model=llm_evaluator, include_reason=True))
     ]
     
     testcase = LLMTestCase(
